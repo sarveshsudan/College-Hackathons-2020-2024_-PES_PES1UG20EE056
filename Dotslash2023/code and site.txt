@@ -1,0 +1,182 @@
+1. import pandas as pd
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+from flask import Flask, request, jsonify
+
+# Load the student data and teacher profiles into Pandas DataFrames
+students_df = pd.read_csv('students.csv')
+teachers_df = pd.read_csv('teachers.csv')
+
+# Vectorize the student learning preferences and teacher subject expertise using CountVectorizer
+cv = CountVectorizer()
+students_vec = cv.fit_transform(students_df['learning_preferences'])
+teachers_vec = cv.fit_transform(teachers_df['subject_expertise'])
+
+# Compute the cosine similarity between the student preferences and teacher expertise vectors
+similarity_matrix = cosine_similarity(students_vec, teachers_vec)
+
+# Define a Flask app for the recommendation system API
+app = Flask(_name_)
+
+# Define a route for the recommendation API
+@app.route('/recommend', methods=['POST'])
+def recommend():
+    # Get the student ID from the request
+    student_id = request.json['student_id']
+    
+    # Find the teachers with the highest cosine similarity to the student's learning preferences
+    similarity_scores = similarity_matrix[student_id]
+    teacher_indices = similarity_scores.argsort()[-3:][::-1]
+    recommended_teachers = teachers_df.iloc[teacher_indices]
+    
+    # Return the recommended teachers as JSON
+    return jsonify(recommended_teachers.to_dict(orient='records'))
+
+if _name_ == '_main_':
+    app.run()
+
+
+2. How often does the teacher communicate with students outside of class time?
+1 - Never
+2 - Rarely
+3 - Once a week
+4 - Several times a week
+5 - Daily
+
+How often does the teacher provide individual feedback to students?
+1 - Never
+2 - Rarely
+3 - Once a month
+4 - Once a week
+5 - After every class
+
+How often does the teacher encourage student participation in class?
+1 - Never
+2 - Rarely
+3 - Occasionally
+4 - Most of the time
+5 - Always
+
+How often does the teacher provide opportunities for group work and collaboration?
+1 - Never
+2 - Rarely
+3 - Occasionally
+4 - Most of the time
+5 - Always
+
+How often does the teacher offer additional resources and materials to help students understand the subject matter?
+1 - Never
+2 - Rarely
+3 - Occasionally
+4 - Most of the time
+5 - Always
+
+How often does the teacher use positive reinforcement to encourage good behavior and academic achievement?
+1 - Never
+2 - Rarely
+3 - Occasionally
+4 - Most of the time
+5 - Always
+
+How often does the teacher provide accommodations for students with special needs?
+1 - Never
+2 - Rarely
+3 - Occasionally
+4 - Most of the time
+5 - Always
+
+How often does the teacher demonstrate a genuine interest in each student's progress and well-being?
+1 - Never
+2 - Rarely
+3 - Occasionally
+4 - Most of the time
+5 - Always
+
+How often does the teacher use humor or storytelling to engage students and make learning fun?
+1 - Never
+2 - Rarely
+3 - Occasionally
+4 - Most of the time
+5 - Always
+
+How often does the teacher respond to student questions and concerns in a timely and respectful manner?
+1 - Never
+2 - Rarely
+3 - Occasionally
+4 - Most of the time
+5 - Always
+
+3. import torch
+import numpy as np
+from torchvision.transforms import transforms
+from models.affectnet import AffectNet
+
+# Load the pre-trained AffectNet model
+model = AffectNet()
+model.eval()
+
+# Define the transform to apply to the input image
+transform = transforms.Compose([
+    transforms.ToPILImage(),
+    transforms.Resize((224, 224)),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
+])
+
+# Loop through the detected faces
+for face in faces:
+    # Detect facial landmarks for the current face
+    landmarks = get_landmarks(frame, predictor, face)
+    
+    # Convert the landmarks to a tensor
+    landmarks = torch.from_numpy(np.array([landmarks])).float()
+    
+    # Apply the transform to the landmarks tensor
+    landmarks = transform(landmarks)
+    
+    # Predict the emotions from the landmarks tensor using the pre-trained model
+    with torch.no_grad():
+        outputs = model(landmarks)
+        emotions = outputs.cpu().numpy()[0]
+        
+    # Analyze the predicted emotions to determine the emotions of
+
+4. import cv2
+import dlib
+from facial_landmarks import get_landmarks
+
+# Load the video clip
+cap = cv2.VideoCapture('video_clip.mp4')
+
+# Initialize the face detector and landmark detector
+detector = dlib.get_frontal_face_detector()
+predictor = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
+
+# Loop through the frames of the video clip
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+    
+    # Detect faces in the current frame
+    faces = detector(frame, 0)
+    
+    # Loop through the detected faces
+    for face in faces:
+        # Detect facial landmarks for the current face
+        landmarks = get_landmarks(frame, predictor, face)
+        
+        # Analyze the facial landmarks to determine the emotions of the teacher
+        
+    # Display the frame with the detected faces and landmarks
+    cv2.imshow('Video', frame)
+    
+    # Wait for the user to press 'q' to exit
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+# Release the video capture and destroy all windows
+cap.release()
+cv2.destroyAllWindows()
+
+5. https://pes1ug20ee052.wixsite.com/match-ed
